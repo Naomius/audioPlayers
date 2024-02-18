@@ -173,12 +173,7 @@ export class PocketMP3Player extends MusicPlayer implements
     IShufflePlaylistControl{
     constructor() {
         super();
-        this.currentVolume = 100;
         this.chargeBatteryLevel = 50;
-        this.backlightColor = 'white';
-        this.currentSong = '...';
-        this.isPlaying = false;
-        this.outputDevice = 'headphones';
     }
 
     toggleFavorite(song: Music): void {
@@ -230,7 +225,7 @@ enum SoundOutput {
     WirelessHeadphones = 'wirelessHeadphones',
     Speaker = 'speaker'
 }
-export class ModernPlayer extends MusicPlayer implements IPlaybackControl, IShufflePlaylistControl {
+export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl {
 
     public outputDeviceIcons: OutputDeviceIcons = {
         'headphones': 'headset',
