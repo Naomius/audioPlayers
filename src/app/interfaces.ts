@@ -56,16 +56,6 @@ export interface Music {
     isFavorite: boolean;
 }
 
-export interface Playlist {
-    name: string;
-    albums: Album[];
-}
-
-export interface Album {
-    name: string;
-    songs: Song[];
-}
-
 export interface Song {
     title: string;
     url: string;

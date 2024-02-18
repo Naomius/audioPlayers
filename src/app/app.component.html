@@ -13,16 +13,14 @@
             <mat-toolbar class="cassettePlayer-header-toolbar" [style.color]="cassettePlayer.backlightColor" color="primary">
                 <div class="cassettePlayer-header-songName">
                     <mat-icon>music_note</mat-icon>
-                    Now Playing: {{ cassettePlayer.currentSong | slice: 15 }}
+                    Now Playing: {{ cassettePlayer.currentSong}}
                 </div>
                 <div class="cassettePlayer-header-battery">
-                    <button mat-button [matMenuTriggerFor]="albumMenu">Кассета</button>
-                    <mat-menu #albumMenu="matMenu">
-                        <ng-container *ngFor="let album of cassettePlayer.playlists[cassettePlayer.currentPlaylistIndex].albums; let i = index">
-                            <button mat-menu-item (click)="cassettePlayer.selectCassette(i)">
-                                {{ album.name }}
+                    <button mat-button [matMenuTriggerFor]="songs">Кассета</button>
+                    <mat-menu #songs="matMenu">
+                            <button mat-menu-item (click)="cassettePlayer.changeSongsSet()">
+                                Сменить кассету
                             </button>
-                        </ng-container>
                     </mat-menu>
 
                     <button mat-icon-button [matMenuTriggerFor]="battery">
@@ -48,7 +46,7 @@
                     <mat-icon style="color: white">shuffle</mat-icon>
                 </button>
             </div>
-            <table mat-table [dataSource]="cassettePlayer.selectedAlbumSongs" class="music-list">
+            <table mat-table [dataSource]="cassettePlayer.currentSongsSet" class="music-list">
                 <ng-container matColumnDef="title">
                     <th mat-header-cell *matHeaderCellDef>Название</th>
                     <td class="cassettePlayer_music-list-flex"
@@ -58,7 +56,10 @@
                             <a (click)="cassettePlayer.playSongFromList(song)">{{ song.title }}</a>
                         </div>
                         <div>
-                            <mat-icon>
+                            <mat-icon *ngIf="!song.isFavorite">
+                                favorite_border
+                            </mat-icon>
+                            <mat-icon *ngIf="song.isFavorite">
                                 favorite
                             </mat-icon>
                         </div>
@@ -111,7 +112,7 @@
                     <mat-icon>headset</mat-icon>
                 </button>
                 <mat-menu #output="matMenu">
-                    <button mat-menu-item (click)="cassettePlayer.changeOutput()">
+                    <button mat-menu-item (click)="cassettePlayer.changeOutput(SoundOutput.Headphones)">
                         Наушники
                     </button>
                 </mat-menu>
@@ -227,7 +228,7 @@
                     <mat-icon>headset</mat-icon>
                 </button>
                 <mat-menu #output="matMenu">
-                    <button mat-menu-item (click)="pocketMp3Player.changeOutput()">
+                    <button mat-menu-item (click)="pocketMp3Player.changeOutput(SoundOutput.Headphones)">
                         Наушники
                     </button>
                 </mat-menu>
