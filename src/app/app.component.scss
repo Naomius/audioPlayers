@@ -1,0 +1,83 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: antiquewhite;
+
+
+    .playersType {
+        display: flex;
+        gap: 15px;
+    }
+
+    .cassettePlayer {
+        width: 480px;
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .cassettePlayer-header {
+
+            .cassettePlayer-header-toolbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .cassettePlayer-header-songName {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .cassettePlayer-header-battery {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+
+        .cassettePlayer_music-list {
+
+            .cassettePlayer_music-list-image {
+                position: relative;
+
+                .cassettePlayer_music-list-shuffle {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+
+           .cassettePlayer_music-list-flex {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               height: inherit;
+           }
+            .music-list a {
+                cursor: pointer;
+                color: cornflowerblue;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+        }
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .volume-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
