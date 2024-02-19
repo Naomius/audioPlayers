@@ -170,7 +170,7 @@ export class CassettePlayer extends MusicPlayer {
 
 //Карманный mp3 плеер
 export class PocketMP3Player extends MusicPlayer implements
-    IShufflePlaylistControl{
+    IShufflePlaylistControl {
     constructor() {
         super();
         this.chargeBatteryLevel = 50;

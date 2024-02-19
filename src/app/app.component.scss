@@ -43,6 +43,8 @@
         }
 
         .cassettePlayer_music-list {
+            max-height: 680px;
+            overflow-y: auto;
 
             .cassettePlayer_music-list-image {
                 position: relative;
