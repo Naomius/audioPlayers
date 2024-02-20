@@ -5,7 +5,8 @@ import {
     IPlaybackControl, IShufflePlaylistControl,
     IVolumeControl, Music, OutputDeviceIcons, Song
 } from "../interfaces";
-import {PlayerType} from "../enums";
+import {PlayerType, SoundOutput} from "../enums";
+import {ChangeDetectorRef} from "@angular/core";
 
 export class MusicPlayer implements IPlaybackControl,
     IVolumeControl,
@@ -90,7 +91,21 @@ export class MusicPlayer implements IPlaybackControl,
     }
 
     changeOutput(outputDevice: string): void {
-        this.outputDevice = outputDevice;
+        switch (this.playerType) {
+            case PlayerType.Cassette:
+                this.outputDevice = SoundOutput.Headphones;
+                console.log('Только Наушники');
+                break;
+            case PlayerType.MP3:
+                this.outputDevice = SoundOutput.Headphones;
+                console.log('Только Наушники');
+                break;
+            case PlayerType.Modern:
+                this.outputDevice = outputDevice;
+                break;
+            default:
+                break;
+        }
     }
 
     changeSongsSet(): void {

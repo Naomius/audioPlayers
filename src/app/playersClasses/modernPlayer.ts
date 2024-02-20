@@ -15,6 +15,10 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         this.chargeBatteryLevel = 20;
     }
 
+    override changeOutput(outputDevice: string): void {
+        this.outputDevice = outputDevice;
+    }
+
     override toggleFavorite(song: Music): void {
         song.isFavorite = !song.isFavorite;
         if (song.isFavorite) {
@@ -42,7 +46,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
     override shufflePlayList(): void {
         const shuffledPlayList = [...this.playList];
         shuffledPlayList.sort(() => Math.random() - 0.5);
-        this.playList = shuffledPlayList
+        this.playList = shuffledPlayList;
     }
 
     override volumeDown(): void {

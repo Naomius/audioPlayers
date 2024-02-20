@@ -1,7 +1,6 @@
-import {ChangeDetectorRef, Component, NgZone} from '@angular/core';
+import {Component} from '@angular/core';
 import {PlayerType, SoundOutput} from "./enums";
 import {MusicPlayer} from "./playersClasses/musicPlayer";
-// import {PlayerSelector} from "./playersClasses/playerSelector";
 import {PocketMP3Player} from "./playersClasses/pocketMP3Player";
 import {ModernPlayer} from "./playersClasses/modernPlayer";
 import {CassettePlayer} from "./playersClasses/cassettePlayer";
@@ -38,6 +37,7 @@ export class AppComponent {
                 break;
         }
     }
+
 
     protected readonly SoundOutput = SoundOutput;
     protected readonly PlayerType = PlayerType;

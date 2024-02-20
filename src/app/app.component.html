@@ -7,8 +7,8 @@
         <button mat-raised-button color="primary" (click)="switchPlayer(PlayerType.Modern)">Современный плеер</button>
     </div>
 
-    <div class="cassettePlayer" *ngIf="currentPlayer.playerType === PlayerType.Cassette">
-        <h2>Кассетный Плеер - выберите кассету</h2>
+    <div class="cassettePlayer" *ngIf="currentPlayer">
+        <h2> {{currentPlayer.playerType}}</h2>
         <div class="cassettePlayer-header">
             <mat-toolbar class="cassettePlayer-header-toolbar" [style.color]="currentPlayer.backlightColor" color="primary">
                 <div class="cassettePlayer-header-songName">
@@ -16,10 +16,20 @@
                     Now Playing: {{ currentPlayer.currentSong}}
                 </div>
                 <div class="cassettePlayer-header-battery">
-                    <button mat-button [matMenuTriggerFor]="songs">Кассета</button>
+                    <button mat-button [matMenuTriggerFor]="songs">
+                        {{ currentPlayer.playerType === PlayerType.Cassette ? 'Кассета' : 'Песни' }}
+                    </button>
                     <mat-menu #songs="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.changeSongsSet()">
-                            Сменить кассету
+                        <button mat-menu-item (click)="currentPlayer.changeSongsSet()" [ngSwitch]="currentPlayer.playerType">
+                            <ng-container *ngSwitchCase="PlayerType.Cassette">
+                                Сменить кассету
+                            </ng-container>
+                            <ng-container *ngSwitchCase="PlayerType.MP3">
+                                Сменить набор песен
+                            </ng-container>
+                            <ng-container *ngSwitchCase="PlayerType.Modern">
+                                Добавить больше треков
+                            </ng-container>
                         </button>
                     </mat-menu>
 
@@ -30,8 +40,16 @@
                         </mat-icon>
                     </button>
                     <mat-menu #battery="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.chargeBattery()">
-                            Смена батарейки
+                        <button mat-menu-item (click)="currentPlayer.chargeBattery()" [ngSwitch]="currentPlayer.playerType">
+                                <ng-container *ngSwitchCase="'Кассетный плеер'">
+                                    Сменить батарейки
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Карманный MP3 плеер'">
+                                    Аккумулятор
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Современный плеер'">
+                                    Мощный аккумулятор
+                                </ng-container>
                         </button>
                     </mat-menu>
                 </div>
@@ -106,241 +124,21 @@
 
                 <button mat-button [matMenuTriggerFor]="menu">Подсветка</button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('white')">Белая</button>
-                </mat-menu>
-
-                <button mat-icon-button [matMenuTriggerFor]="output">
-                    <mat-icon>headset</mat-icon>
-                </button>
-                <mat-menu #output="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeOutput(SoundOutput.Headphones)">
-                        Наушники
-                    </button>
-                </mat-menu>
-            </mat-toolbar>
-        </footer>
-    </div>
-
-    <div class="pocketMP3Player cassettePlayer" *ngIf="currentPlayer.playerType === PlayerType.MP3">
-        <h2>Карманный MP3 Плеер</h2>
-        <div class="cassettePlayer-header">
-            <mat-toolbar class="cassettePlayer-header-toolbar" [style.color]="currentPlayer.backlightColor" color="primary">
-                <div class="cassettePlayer-header-songName">
-                    <mat-icon>music_note</mat-icon>
-                    Now Playing: {{ currentPlayer.currentSong}}
-                </div>
-                <div class="cassettePlayer-header-battery">
-                    <button mat-button [matMenuTriggerFor]="songs">Песни</button>
-                    <mat-menu #songs="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.changeSongsSet()">
-                            Сменить набор песен
-                        </button>
-                    </mat-menu>
-
-                    <button mat-icon-button [matMenuTriggerFor]="battery">
-                        <mat-icon
-                            matBadge="{{currentPlayer.chargeBatteryLevel}}"
-                            matBadgeColor="primary">battery_charging_full
-                        </mat-icon>
-                    </button>
-                    <mat-menu #battery="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.chargeBattery()">
-                            Аккумулятор
-                        </button>
-                    </mat-menu>
-                </div>
-            </mat-toolbar>
-        </div>
-
-        <div class="cassettePlayer_music-list">
-            <div class="cassettePlayer_music-list-image">
-                <img src="./assets/songsImages/musicPicture.jpg" alt="picture"
-                     style="width: 100%; max-width: 480px">
-                <button class="cassettePlayer_music-list-shuffle" mat-icon-button
-                        (click)="currentPlayer.shufflePlayList()">
-                    <mat-icon style="color: white">shuffle</mat-icon>
-                </button>
-            </div>
-            <table mat-table [dataSource]="currentPlayer.playList" class="music-list">
-                <ng-container matColumnDef="title">
-                    <th mat-header-cell *matHeaderCellDef>Название</th>
-                    <td class="cassettePlayer_music-list-flex"
-                        mat-cell *matCellDef="let song; let i = index">
-                        <div>
-                            <mat-icon style="vertical-align: bottom" color="primary" mat-list-icon>music_note</mat-icon>
-                            <a (click)="currentPlayer.playSongFromList(song)">{{ song.title }}</a>
-                        </div>
-                        <div>
-                            <mat-icon *ngIf="!song.isFavorite" (click)="currentPlayer.toggleFavorite(song)">
-                                favorite_border
-                            </mat-icon>
-                            <mat-icon *ngIf="song.isFavorite" (click)="currentPlayer.toggleFavorite(song)">
-                                favorite
-                            </mat-icon>
-                        </div>
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row
-                    *matRowDef="let row; columns: displayedColumns;">
-                </tr>
-            </table>
-        </div>
-
-        <footer>
-            <mat-toolbar>
-                <button mat-icon-button (click)="currentPlayer.previousSong()">
-                    <mat-icon>skip_previous</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.play()"
-                        *ngIf="!currentPlayer.isPlaying; else pauseButton">
-                    <mat-icon>play_arrow</mat-icon>
-                </button>
-                <ng-template #pauseButton>
-                    <button mat-icon-button (click)="currentPlayer.pause()">
-                        <mat-icon>pause</mat-icon>
-                    </button>
-                </ng-template>
-                <button mat-icon-button (click)="currentPlayer.nextSong()">
-                    <mat-icon>skip_next</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.toggleMute()">
-                    <mat-icon
-                        matBadge="{{currentPlayer.currentVolume}}"
-                        matBadgeColor="warn">volume_up
-                    </mat-icon>
-                </button>
-
-                <button mat-icon-button (click)="currentPlayer.volumeUp()">
-                    <mat-icon>add</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.volumeDown()">
-                    <mat-icon>remove</mat-icon>
-                </button>
-
-                <button mat-button [matMenuTriggerFor]="menu">Подсветка</button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('white')">Белая</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('yellow')">Желтая</button>
-                </mat-menu>
-
-                <button mat-icon-button [matMenuTriggerFor]="output">
-                    <mat-icon>headset</mat-icon>
-                </button>
-                <mat-menu #output="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeOutput(SoundOutput.Headphones)">
-                        Наушники
-                    </button>
-                </mat-menu>
-            </mat-toolbar>
-        </footer>
-    </div>
-
-    <div class="modernPlayer cassettePlayer" *ngIf="currentPlayer.playerType === PlayerType.Modern">
-        <h2>Современный плеер</h2>
-        <div class="cassettePlayer-header">
-            <mat-toolbar class="cassettePlayer-header-toolbar" [style.color]="currentPlayer.backlightColor" color="primary">
-                <div class="cassettePlayer-header-songName">
-                    <mat-icon>music_note</mat-icon>
-                    Now Playing: {{ currentPlayer.currentSong}}
-                </div>
-                <div class="cassettePlayer-header-battery">
-                    <button mat-button [matMenuTriggerFor]="songs">Песни</button>
-                    <mat-menu #songs="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.changeSongsSet()">
-                            Добавить больше треков
-                        </button>
-                    </mat-menu>
-
-                    <button mat-icon-button [matMenuTriggerFor]="battery">
-                        <mat-icon
-                            matBadge="{{currentPlayer.chargeBatteryLevel}}"
-                            matBadgeColor="primary">battery_charging_full
-                        </mat-icon>
-                    </button>
-                    <mat-menu #battery="matMenu">
-                        <button mat-menu-item (click)="currentPlayer.chargeBattery()">
-                            Мощный Аккумулятор
-                        </button>
-                    </mat-menu>
-                </div>
-            </mat-toolbar>
-        </div>
-
-        <div class="cassettePlayer_music-list">
-            <div class="cassettePlayer_music-list-image">
-                <img src="./assets/songsImages/musicPicture.jpg" alt="picture"
-                     style="width: 100%; max-width: 480px">
-                <button class="cassettePlayer_music-list-shuffle" mat-icon-button
-                        (click)="currentPlayer.shufflePlayList()">
-                    <mat-icon style="color: white">shuffle</mat-icon>
-                </button>
-            </div>
-            <table mat-table [dataSource]="currentPlayer.playList" class="music-list">
-                <ng-container matColumnDef="title">
-                    <th mat-header-cell *matHeaderCellDef>Название</th>
-                    <td class="cassettePlayer_music-list-flex"
-                        mat-cell *matCellDef="let song; let i = index">
-                        <div>
-                            <mat-icon style="vertical-align: bottom" color="primary" mat-list-icon>music_note</mat-icon>
-                            <a (click)="currentPlayer.playSongFromList(song)">{{ song.title }}</a>
-                        </div>
-                        <div>
-                            <mat-icon *ngIf="!song.isFavorite" (click)="currentPlayer.toggleFavorite(song)">
-                                favorite_border
-                            </mat-icon>
-                            <mat-icon *ngIf="song.isFavorite" (click)="currentPlayer.toggleFavorite(song)">
-                                favorite
-                            </mat-icon>
-                        </div>
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row
-                    *matRowDef="let row; columns: displayedColumns;">
-                </tr>
-            </table>
-        </div>
-
-        <footer>
-            <mat-toolbar>
-                <button mat-icon-button (click)="currentPlayer.previousSong()">
-                    <mat-icon>skip_previous</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.play()"
-                        *ngIf="!currentPlayer.isPlaying; else pauseButton">
-                    <mat-icon>play_arrow</mat-icon>
-                </button>
-                <ng-template #pauseButton>
-                    <button mat-icon-button (click)="currentPlayer.pause()">
-                        <mat-icon>pause</mat-icon>
-                    </button>
-                </ng-template>
-                <button mat-icon-button (click)="currentPlayer.nextSong()">
-                    <mat-icon>skip_next</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.toggleMute()">
-                    <mat-icon
-                        matBadge="{{currentPlayer.currentVolume}}"
-                        matBadgeColor="warn">volume_up
-                    </mat-icon>
-                </button>
-
-                <button mat-icon-button (click)="currentPlayer.volumeUp()">
-                    <mat-icon>add</mat-icon>
-                </button>
-                <button mat-icon-button (click)="currentPlayer.volumeDown()">
-                    <mat-icon>remove</mat-icon>
-                </button>
-
-                <button mat-button [matMenuTriggerFor]="menu">Подсветка</button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('white')">Белая</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('yellow')">Желтая</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('green')">Зеленая</button>
-                    <button mat-menu-item (click)="currentPlayer.changeBacklightColor('aqua')">Голубая</button>
+                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.Cassette">
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('white')">Белая</button>
+                    </ng-container>
+                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.MP3">
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('blue')">Синяя</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('green')">Зеленая</button>
+                    </ng-container>
+                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.Modern">
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('yellow')">Желтая</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('green')">Зеленая</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('blue')">Синяя</button>
+                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('purple')">Фиолетовая</button>
+                    </ng-container>
                 </mat-menu>
 
                 <button mat-icon-button [matMenuTriggerFor]="output">

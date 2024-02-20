@@ -4,7 +4,7 @@ export enum SoundOutput {
     Speaker = 'speaker'
 }
 export enum PlayerType {
-    Cassette = 'cassette',
-    MP3 = 'mp3',
-    Modern = 'modern'
+    Cassette = 'Кассетный плеер',
+    MP3 = 'Карманный MP3 плеер',
+    Modern = 'Современный плеер'
 }
