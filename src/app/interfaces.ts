@@ -20,6 +20,7 @@ export interface IFavoriteSongs {
     favoriteSongs: string[];
     addCurrentSongToFavourite(song: string): void;
     removeCurrentSongFromFavourite(song: string): void;
+    toggleFavorite(song: Music): void
 }
 
 export interface IOutputDeviceControl {
@@ -60,3 +61,4 @@ export interface Song {
     title: string;
     url: string;
 }
+
