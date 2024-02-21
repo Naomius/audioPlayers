@@ -50,15 +50,15 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
     }
 
     toggleFavorite(song: Music): void {
-        alert("В этом плеере такой функционал не предусмотрен");
+        this.alertMethod()
     }
 
     addCurrentSongToFavourite(song: string): void {
-        alert("В этом плеере такой функционал не предусмотрен");
+        this.alertMethod()
     }
 
     removeCurrentSongFromFavourite(song: string): void {
-        alert("В этом плеере такой функционал не предусмотрен");
+        this.alertMethod()
     }
 
     changeSongsSet(): void {

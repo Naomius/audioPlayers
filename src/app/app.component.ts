@@ -4,6 +4,7 @@ import {MusicPlayer} from "./playersClasses/musicPlayer";
 import {PocketMP3Player} from "./playersClasses/pocketMP3Player";
 import {ModernPlayer} from "./playersClasses/modernPlayer";
 import {CassettePlayer} from "./playersClasses/cassettePlayer";
+import {SuperModerPlayer} from "./playersClasses/superModerPlayer";
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,10 @@ export class AppComponent {
                 break;
             case PlayerType.Modern:
                 this.currentPlayer = new ModernPlayer();
+                console.log(this.currentPlayer)
+                break;
+            case PlayerType.SuperModern:
+                this.currentPlayer = new SuperModerPlayer();
                 console.log(this.currentPlayer)
                 break;
             default:

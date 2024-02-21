@@ -93,6 +93,10 @@ export abstract class MusicPlayer implements IPlaybackControl,
         }
     }
 
+    alertMethod(): void {
+        alert("В этом плеере такой функционал не предусмотрен");
+    }
+
     changeBacklightColor(color: string): void {
         this.backlightColor = this.englishBacklightColors[this.backlightColors.indexOf(color)];
     }
