@@ -123,6 +123,7 @@
                 </button>
 
                 <button mat-button [matMenuTriggerFor]="menu">Подсветка</button>
+
                 <mat-menu #menu="matMenu">
                     <ng-container *ngIf="currentPlayer">
                         <ng-container *ngFor="let color of currentPlayer.getAvailableBacklightColors()">
@@ -135,15 +136,9 @@
                     <mat-icon>{{currentPlayer.outputDeviceIcons[currentPlayer.outputDevice]}}</mat-icon>
                 </button>
                 <mat-menu #output="matMenu">
-                    <button mat-menu-item (click)="currentPlayer.changeOutput(SoundOutput.Headphones)">
-                        Наушники
-                    </button>
-                    <button mat-menu-item (click)="currentPlayer.changeOutput(SoundOutput.WirelessHeadphones)">
-                        Беспроводные наушники
-                    </button>
-                    <button mat-menu-item (click)="currentPlayer.changeOutput(SoundOutput.Speaker)">
-                        Динамик
-                    </button>
+                    <ng-container *ngFor="let output of currentPlayer.getAvailableOutputs()">
+                        <button mat-menu-item (click)="currentPlayer.changeOutput(output)">{{ currentPlayer.russianOutputNames[output] }}</button>
+                    </ng-container>
                 </mat-menu>
             </mat-toolbar>
         </footer>

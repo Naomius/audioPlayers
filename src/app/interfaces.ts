@@ -14,18 +14,6 @@ export interface IPlaybackControl {
     play(): void;
 }
 
-export interface IFavoriteSongs {
-    favoriteSongs: string[];
-    addCurrentSongToFavourite(song: string): void;
-    removeCurrentSongFromFavourite(song: string): void;
-    toggleFavorite(song: Music): void
-}
-
-export interface IOutputDeviceControl {
-    outputDevice: string;
-    changeOutput(outputDevice: string): void;
-}
-
 export interface OutputDeviceIcons {
     [key: string]: string;
 }
@@ -46,10 +34,6 @@ export interface IChangeSongManagerControl {
     currentSong: string;
 }
 
-export interface Playlist {
-    playList: Music[];
-}
-
 export interface IChargeLevelControl {
     chargeBatteryLevel: number;
     chargeBattery(): void;
@@ -64,4 +48,11 @@ export interface Song {
     title: string;
     url: string;
 }
+
+
+// export interface IFavoriteSongs {
+//     favoriteSongs: string[];
+//     addCurrentSongToFavourite(song: string): void;
+//     removeCurrentSongFromFavourite(song: string): void;
+// }
 

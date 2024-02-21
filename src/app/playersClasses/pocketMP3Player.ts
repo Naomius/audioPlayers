@@ -1,21 +1,53 @@
 import {MusicPlayer} from "./musicPlayer";
 import {IShufflePlaylistControl, Music} from "../interfaces";
-import {PlayerType} from "../enums";
+import {PlayerType, SoundOutput} from "../enums";
+
 
 export class PocketMP3Player extends MusicPlayer implements
     IShufflePlaylistControl {
+    getAvailableBacklightColors(): string[] {
+        return ['Красный', 'Синий', 'Зеленый'];
+    }
 
     constructor() {
         super(PlayerType.MP3);
         this.chargeBatteryLevel = 50;
+        this.favoriteSongs = [];
+        this.backlightColors = ['Белый', 'Красный', 'Синий'];
+        this.englishBacklightColors = ['white', 'red', 'blue'];
+        this.outputDeviceIcons = {
+            'headphones': 'headset'
+        };
+        this.russianOutputNames = {
+            'headphones': 'Наушники'
+        };
     }
 
-    override toggleFavorite(song: Music): void {
+    getAvailableOutputs(): SoundOutput[] {
+        return [SoundOutput.Headphones];
+    }
+
+    toggleFavorite(song: Music): void {
         song.isFavorite = !song.isFavorite;
         if (song.isFavorite) {
             this.addCurrentSongToFavourite(song.title);
         } else {
             this.removeCurrentSongFromFavourite(song.title);
+        }
+    }
+
+    addCurrentSongToFavourite(song: string): void {
+        if (!this.favoriteSongs.includes(song)) {
+            this.favoriteSongs.push(song);
+            console.log(`${song} добавлена в избранное.`);
+        }
+    }
+
+    removeCurrentSongFromFavourite(song: string): void {
+        const index = this.favoriteSongs.indexOf(song);
+        if (index !== -1) {
+            this.favoriteSongs.splice(index, 1);
+            console.log(`${song} удалена из избранного.`);
         }
     }
 
@@ -32,7 +64,7 @@ export class PocketMP3Player extends MusicPlayer implements
         }, 1000)
     }
 
-    override shufflePlayList(): void {
+    shufflePlayList(): void {
         const shuffledPlayList = [...this.playList];
         shuffledPlayList.sort(() => Math.random() - 0.5);
         this.playList = shuffledPlayList

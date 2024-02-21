@@ -1,6 +1,6 @@
 import {MusicPlayer} from "./musicPlayer";
 import {IShufflePlaylistControl, Music, OutputDeviceIcons} from "../interfaces";
-import {PlayerType} from "../enums";
+import {PlayerType, SoundOutput} from "../enums";
 
 export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl {
 
@@ -13,13 +13,26 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
     constructor() {
         super(PlayerType.Modern);
         this.chargeBatteryLevel = 20;
+        this.favoriteSongs = [];
+        this.backlightColors = ['Белый', 'Красный', 'Синий', 'Зеленый', 'Желтый', 'Фиолетовый'];
+        this.englishBacklightColors = ['white', 'red', 'blue', 'green', 'yellow', 'purple'];
+
+        this.russianOutputNames = {
+            'headphones': 'Наушники',
+            'wirelessHeadphones': 'ВиФи',
+            'speaker': 'Колонки',
+        };
     }
 
-    override changeOutput(outputDevice: string): void {
-        this.outputDevice = outputDevice;
+    getAvailableBacklightColors(): string[] {
+        return ['Красный', 'Желтый', 'Зеленый', 'Синий', 'Фиолетовый'];
     }
 
-    override toggleFavorite(song: Music): void {
+    getAvailableOutputs(): SoundOutput[] {
+        return [SoundOutput.Headphones, SoundOutput.WirelessHeadphones, SoundOutput.Speaker];
+    }
+
+    toggleFavorite(song: Music): void {
         song.isFavorite = !song.isFavorite;
         if (song.isFavorite) {
             this.addCurrentSongToFavourite(song.title);
@@ -34,6 +47,21 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         }
     }
 
+    addCurrentSongToFavourite(song: string): void {
+        if (!this.favoriteSongs.includes(song)) {
+            this.favoriteSongs.push(song);
+            console.log(`${song} добавлена в избранное.`);
+        }
+    }
+
+    removeCurrentSongFromFavourite(song: string): void {
+        const index = this.favoriteSongs.indexOf(song);
+        if (index !== -1) {
+            this.favoriteSongs.splice(index, 1);
+            console.log(`${song} удалена из избранного.`);
+        }
+    }
+
     override chargeBattery(): void {
         setInterval((): void => {
             this.chargeBatteryLevel += 20;
@@ -43,7 +71,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         }, 1000)
     }
 
-    override shufflePlayList(): void {
+    shufflePlayList(): void {
         const shuffledPlayList = [...this.playList];
         shuffledPlayList.sort(() => Math.random() - 0.5);
         this.playList = shuffledPlayList;
@@ -62,4 +90,5 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
             this.audio.volume = this.currentVolume / 100;
         }
     }
+
 }
