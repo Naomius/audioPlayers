@@ -1,7 +1,6 @@
 import {MusicPlayer} from "./musicPlayer";
 import {PlayerType, SoundOutput} from "../enums";
 import {IShufflePlaylistControl, Music} from "../interfaces";
-
 export class CassettePlayer extends MusicPlayer implements IShufflePlaylistControl{
     constructor() {
         super(PlayerType.Cassette);
@@ -10,9 +9,6 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
         this.chargeBatteryLevel = 60;
         this.backlightColors = ['Белый'];
         this.englishBacklightColors = ['white'];
-        this.outputDeviceIcons = {
-            'headphones': 'headset'
-        };
         this.russianOutputNames = {
             'headphones': 'Наушники'
         };
@@ -22,7 +18,7 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
     }
 
     shufflePlayList(): void {
-        alert("В этом плеере такой функционал не предусмотрен")
+        this.alertMethod()
     }
     getAvailableBacklightColors(): string[] {
         return ['Белый'];
