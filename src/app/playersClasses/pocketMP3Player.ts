@@ -11,6 +11,7 @@ export class PocketMP3Player extends MusicPlayer implements
 
     constructor() {
         super(PlayerType.MP3);
+        this.currentVolume = 80;
         this.chargeBatteryLevel = 50;
         this.favoriteSongs = [];
         this.backlightColors = ['Белый', 'Красный', 'Синий'];
@@ -54,11 +55,11 @@ export class PocketMP3Player extends MusicPlayer implements
         }
     }
 
-    override changeSongsSet(): void {
+    changeSongsSet(): void {
         this.playList = this.newSongs.slice(0, 5);
     }
 
-    override chargeBattery(): void {
+    chargeBattery(): void {
         setInterval((): void => {
             this.chargeBatteryLevel += 5;
             if (this.chargeBatteryLevel > 100) {
@@ -73,14 +74,14 @@ export class PocketMP3Player extends MusicPlayer implements
         this.playList = shuffledPlayList
     }
 
-    override volumeDown(): void {
+    volumeDown(): void {
         if (this.currentVolume > 0) {
             this.currentVolume = Math.max(0, this.currentVolume - 5);
             this.audio.volume = this.currentVolume / 100;
         }
     }
 
-    override volumeUp(): void {
+    volumeUp(): void {
         if (this.currentVolume < 100) {
             this.currentVolume = Math.min(100, this.currentVolume + 5);
             this.audio.volume = this.currentVolume / 100;

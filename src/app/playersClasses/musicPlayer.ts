@@ -1,17 +1,15 @@
 import {
     IBacklightControl,
-    IChangeSongManagerControl, IChargeLevelControl,
-    IPlaybackControl, IShufflePlaylistControl,
-    IVolumeControl, Music, OutputDeviceIcons, Song
+    IChangeSongManagerControl,
+    IPlaybackControl, IShufflePlaylistControl, IVolumeControl, Music, OutputDeviceIcons, Song
 } from "../interfaces";
 import {PlayerType, SoundOutput} from "../enums";
 
 export abstract class MusicPlayer implements IPlaybackControl,
-    IVolumeControl,
     IBacklightControl,
     IChangeSongManagerControl,
-    IChargeLevelControl,
-    IShufflePlaylistControl {
+    IShufflePlaylistControl,
+    IVolumeControl {
 
 
     public playerType: PlayerType;
@@ -19,7 +17,7 @@ export abstract class MusicPlayer implements IPlaybackControl,
     public isPlaying: boolean;
     public backlightColor!: string;
     public chargeBatteryLevel!: number;
-    public currentVolume: number;
+    public currentVolume!: number;
     public outputDevice: string;
     public playList: Music[];
     public newSongs: Music[];
@@ -35,8 +33,6 @@ export abstract class MusicPlayer implements IPlaybackControl,
         this.playerType = playerType;
         this.currentSong = '...';
         this.isPlaying = false;
-        this.currentVolume = 100;
-        this.currentSong = '...';
         this.outputDevice = 'headphones';
         this.playList = [
             {title: 'Saliva', url: './assets/music/Saliva.mp3', isFavorite: false},
@@ -61,6 +57,10 @@ export abstract class MusicPlayer implements IPlaybackControl,
     abstract removeCurrentSongFromFavourite(song: string): void;
     abstract shufflePlayList(): void;
     abstract getAvailableOutputs(): SoundOutput[];
+    abstract volumeUp(): void;
+    abstract volumeDown(): void;
+    abstract chargeBattery(): void;
+    abstract changeSongsSet(): void;
 
     play(): void {
         this.isPlaying = true;
@@ -102,30 +102,7 @@ export abstract class MusicPlayer implements IPlaybackControl,
         this.outputDevice = outputDevice;
     }
 
-    changeSongsSet(): void {
-        this.playList = (this.currentSongsSet === this.playList) ? this.newSongs : this.playList;
-    }
-
-    chargeBattery(): void {
-        this.chargeBatteryLevel = 100;
-    }
-
-    toggleMute(): void {
+    toggleMute(): void { //todo оставил в интерфейсе общая для всех, с одинаковыми действиями. Тут спорный момент только в том, что если вдруг добавим плеер без 'Mute'.
         this.audio.muted = !this.audio.muted;
     }
-
-    volumeDown(): void {
-        if (this.currentVolume > 0) {
-            this.currentVolume--;
-            this.audio.volume = this.currentVolume / 100;
-        }
-    }
-
-    volumeUp(): void {
-        if (this.currentVolume < 100) {
-            this.currentVolume++;
-            this.audio.volume = this.currentVolume / 100;
-        }
-    }
-
 }

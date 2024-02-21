@@ -8,6 +8,7 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
     override backlightColor!: string;
     constructor() {
         super(PlayerType.Cassette);
+        this.currentVolume = 100;
         this.chargeBatteryLevel = 60;
         this.backlightColors = ['Белый'];
         this.englishBacklightColors = ['white'];
@@ -33,6 +34,23 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
         return [SoundOutput.Headphones];
     }
 
+    volumeUp(): void {
+        if (this.currentVolume < 100) {
+            this.currentVolume++;
+            this.audio.volume = this.currentVolume / 100;
+        }
+    }
+
+    volumeDown(): void {
+        if (this.currentVolume > 0) {
+            this.currentVolume--;
+            this.audio.volume = this.currentVolume / 100;
+        }
+    }
+    chargeBattery(): void {
+        this.chargeBatteryLevel = 100;
+    }
+
     toggleFavorite(song: Music): void {
         alert("В этом плеере такой функционал не предусмотрен");
     }
@@ -43,6 +61,10 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
 
     removeCurrentSongFromFavourite(song: string): void {
         alert("В этом плеере такой функционал не предусмотрен");
+    }
+
+    changeSongsSet(): void {
+        this.playList = (this.currentSongsSet === this.playList) ? this.newSongs : this.playList;
     }
 
 }

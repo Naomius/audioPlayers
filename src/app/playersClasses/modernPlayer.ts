@@ -6,6 +6,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
 
     constructor() {
         super(PlayerType.Modern);
+        this.currentVolume = 90;
         this.chargeBatteryLevel = 20;
         this.favoriteSongs = [];
         this.backlightColors = ['Белый', 'Красный', 'Синий', 'Зеленый', 'Желтый', 'Фиолетовый'];
@@ -40,7 +41,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         }
     }
 
-    override changeSongsSet(): void {
+    changeSongsSet(): void {
         if (this.newSongs.length > 0) {
             this.playList = this.playList.concat(this.newSongs);
         }
@@ -61,7 +62,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         }
     }
 
-    override chargeBattery(): void {
+    chargeBattery(): void {
         setInterval((): void => {
             this.chargeBatteryLevel += 20;
             if (this.chargeBatteryLevel > 100) {
@@ -76,14 +77,14 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         this.playList = shuffledPlayList;
     }
 
-    override volumeDown(): void {
+    volumeDown(): void {
         if (this.currentVolume > 0) {
             this.currentVolume = Math.max(0, this.currentVolume - 5);
             this.audio.volume = this.currentVolume / 100;
         }
     }
 
-    override volumeUp(): void {
+    volumeUp(): void {
         if (this.currentVolume < 100) {
             this.currentVolume = Math.min(100, this.currentVolume + 5);
             this.audio.volume = this.currentVolume / 100;

@@ -1,8 +1,6 @@
 
 export interface IVolumeControl {
     currentVolume: number;
-    volumeUp(): void;
-    volumeDown(): void;
     toggleMute(): void;
 }
 
@@ -29,15 +27,10 @@ export interface IShufflePlaylistControl {
 }
 
 export interface IChangeSongManagerControl {
-    changeSongsSet(): void;
     playSongFromList(song: Song): void;
     currentSong: string;
 }
 
-export interface IChargeLevelControl {
-    chargeBatteryLevel: number;
-    chargeBattery(): void;
-}
 export interface Music {
     title: string
     url: string;
