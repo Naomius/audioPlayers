@@ -1,6 +1,6 @@
 import {MusicPlayer} from "./musicPlayer";
 import {PlayerType, SoundOutput} from "../enums";
-import {IShufflePlaylistControl, Music, OutputDeviceIcons} from "../interfaces";
+import {IShufflePlaylistControl, Music} from "../interfaces";
 
 export class CassettePlayer extends MusicPlayer implements IShufflePlaylistControl{
 
@@ -17,6 +17,9 @@ export class CassettePlayer extends MusicPlayer implements IShufflePlaylistContr
         this.russianOutputNames = {
             'headphones': 'Наушники'
         };
+        this.outputDeviceIcons = {
+            'headphones': 'headset'
+        }
     }
 
     shufflePlayList(): void {

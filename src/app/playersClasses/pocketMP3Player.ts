@@ -21,6 +21,9 @@ export class PocketMP3Player extends MusicPlayer implements
         this.russianOutputNames = {
             'headphones': 'Наушники'
         };
+        this.outputDeviceIcons = {
+            'headphones': 'headset'
+        }
     }
 
     getAvailableOutputs(): SoundOutput[] {

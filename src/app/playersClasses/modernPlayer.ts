@@ -4,12 +4,6 @@ import {PlayerType, SoundOutput} from "../enums";
 
 export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl {
 
-    public override outputDeviceIcons: OutputDeviceIcons = {
-        'headphones': 'headset',
-        'wirelessHeadphones': 'hearing',
-        'speaker': 'speaker'
-    };
-
     constructor() {
         super(PlayerType.Modern);
         this.chargeBatteryLevel = 20;
@@ -22,6 +16,11 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
             'wirelessHeadphones': 'ВиФи',
             'speaker': 'Колонки',
         };
+        this.outputDeviceIcons = {
+            'headphones': 'headset',
+            'wirelessHeadphones': 'hearing',
+            'speaker': 'speaker'
+        }
     }
 
     getAvailableBacklightColors(): string[] {
