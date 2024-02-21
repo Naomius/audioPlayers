@@ -7,9 +7,7 @@ export interface IVolumeControl {
 }
 
 export interface IPlaybackControl {
-    currentSong: string;
     isPlaying: boolean;
-    playSongFromList(song: Song): void;
     previousSong(): void;
     nextSong(): void;
     pause(): void;
@@ -43,8 +41,13 @@ export interface IShufflePlaylistControl {
 }
 
 export interface IChangeSongManagerControl {
-    playList: Music[];
     changeSongsSet(): void;
+    playSongFromList(song: Song): void;
+    currentSong: string;
+}
+
+export interface Playlist {
+    playList: Music[];
 }
 
 export interface IChargeLevelControl {

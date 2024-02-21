@@ -6,9 +6,9 @@ import {
     IVolumeControl, Music, OutputDeviceIcons, Song
 } from "../interfaces";
 import {PlayerType, SoundOutput} from "../enums";
-import {ChangeDetectorRef} from "@angular/core";
+import {PlaybackControl} from "./playbackControl";
 
-export class MusicPlayer implements IPlaybackControl,
+export class MusicPlayer extends PlaybackControl implements IPlaybackControl,
     IVolumeControl,
     IOutputDeviceControl,
     IBacklightControl,
@@ -26,17 +26,17 @@ export class MusicPlayer implements IPlaybackControl,
     playerType: PlayerType;
     public backlightColor: string;
     public chargeBatteryLevel: number;
-    public currentSong: string;
     public currentVolume: number;
-    public isPlaying: boolean;
     public outputDevice: string;
-    public playList: Music[];
+    public override playList: Music[];
     public newSongs: Music[];
     public currentSongsSet: Music[];
     public favoriteSongs: string[];
-    protected audio: HTMLAudioElement = new Audio();
+    public backlightColors = ['Белый', 'Красный', 'Синий', 'Зеленый', 'Желтый', 'Фиолетовый'];
+    public englishBacklightColors = ['white', 'red', 'blue', 'green', 'yellow', 'purple'];
 
-    constructor(playerType: PlayerType) {
+    protected constructor(playerType: PlayerType) {
+        super();
         this.playerType = playerType;
         this.backlightColor = 'white';
         this.chargeBatteryLevel = 50;
@@ -46,20 +46,36 @@ export class MusicPlayer implements IPlaybackControl,
         this.outputDevice = 'headphones';
         this.favoriteSongs = [];
         this.playList = [
-            { title: 'Saliva', url: './assets/music/Saliva.mp3', isFavorite: false},
-            { title: 'FiveFinger', url: './assets/music/FiveFinger.mp3', isFavorite: false},
-            { title: 'Hope', url: './assets/music/Hope.mp3', isFavorite: false},
-            { title: 'In the end', url: './assets/music/InTheEnd.mp3', isFavorite: false},
-            { title: 'TokyoDrift', url: './assets/music/TokioDrift.mp3', isFavorite: false},
+            {title: 'Saliva', url: './assets/music/Saliva.mp3', isFavorite: false},
+            {title: 'FiveFinger', url: './assets/music/FiveFinger.mp3', isFavorite: false},
+            {title: 'Hope', url: './assets/music/Hope.mp3', isFavorite: false},
+            {title: 'In the end', url: './assets/music/InTheEnd.mp3', isFavorite: false},
+            {title: 'TokyoDrift', url: './assets/music/TokioDrift.mp3', isFavorite: false},
         ];
         this.newSongs = [
-            { title: 'ImagineDragons', url: './assets/music/ImagineDragons.mp3', isFavorite: false},
-            { title: 'Morpheus', url: './assets/music/Morpheus.mp3', isFavorite: false},
-            { title: 'Rocky', url: './assets/music/Rocky.mp3', isFavorite: false},
-            { title: 'Transformers', url: './assets/music/Transformers.mp3', isFavorite: false},
-            { title: 'NoSurprise', url: './assets/music/NoSurprice.mp3', isFavorite: false},
+            {title: 'ImagineDragons', url: './assets/music/ImagineDragons.mp3', isFavorite: false},
+            {title: 'Morpheus', url: './assets/music/Morpheus.mp3', isFavorite: false},
+            {title: 'Rocky', url: './assets/music/Rocky.mp3', isFavorite: false},
+            {title: 'Transformers', url: './assets/music/Transformers.mp3', isFavorite: false},
+            {title: 'NoSurprise', url: './assets/music/NoSurprice.mp3', isFavorite: false},
         ]
         this.currentSongsSet = this.playList;
+    }
+
+    changeBacklightColor(color: string): void {
+        this.backlightColor = this.englishBacklightColors[this.backlightColors.indexOf(color)];
+    }
+    getAvailableBacklightColors(): string[] {
+        switch(this.playerType) {
+            case PlayerType.Cassette:
+                return ['Белый'];
+            case PlayerType.MP3:
+                return ['Красный', 'Синий', 'Зеленый'];
+            case PlayerType.Modern:
+                return ['Красный', 'Желтый', 'Зеленый', 'Синий', 'Фиолетовый'];
+            default:
+                return [];
+        }
     }
 
     toggleFavorite(song: Music): void {
@@ -78,6 +94,7 @@ export class MusicPlayer implements IPlaybackControl,
             console.log(`${song} добавлена в избранное.`);
         }
     }
+
     removeCurrentSongFromFavourite(song: string): void {
         const index = this.favoriteSongs.indexOf(song);
         if (index !== -1) {
@@ -86,9 +103,9 @@ export class MusicPlayer implements IPlaybackControl,
         }
     }
 
-    changeBacklightColor(color: string): void {
-        this.backlightColor = color;
-    }
+    // changeBacklightColor(color: string): void {
+    //     this.backlightColor = color;
+    // }
 
     changeOutput(outputDevice: string): void {
         switch (this.playerType) {
@@ -109,44 +126,11 @@ export class MusicPlayer implements IPlaybackControl,
     }
 
     changeSongsSet(): void {
-        this.currentSongsSet = (this.currentSongsSet === this.playList) ? this.newSongs : this.playList;
+        this.playList = (this.currentSongsSet === this.playList) ? this.newSongs : this.playList;
     }
 
     chargeBattery(): void {
         this.chargeBatteryLevel = 100;
-    }
-
-    nextSong(): void {
-        const currentIndex: number = this.playList.findIndex(song => song.title == this.currentSong);
-        if (currentIndex !== -1 && currentIndex < this.playList.length - 1) {
-            this.currentSong = this.playList[currentIndex + 1].url;
-            this.playSongFromList(this.playList[currentIndex + 1]);
-        }
-    }
-
-    pause(): void {
-        this.isPlaying = false;
-        this.audio.pause();
-    }
-
-    play(): void {
-        this.isPlaying = true;
-        this.audio.play();
-    }
-
-    playSongFromList(song: Song): void {
-        this.isPlaying = true;
-        this.audio.src = song.url;
-        this.audio.play();
-        this.currentSong = song.title
-    }
-
-    previousSong(): void {
-        const currentIndex: number = this.playList.findIndex(song => song.title === this.currentSong);
-        if (currentIndex !== -1 && currentIndex > 0) {
-            this.currentSong = this.playList[currentIndex - 1].url;
-            this.playSongFromList(this.playList[currentIndex - 1]);
-        }
     }
 
     toggleMute(): void {

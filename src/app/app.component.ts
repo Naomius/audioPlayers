@@ -12,6 +12,8 @@ import {CassettePlayer} from "./playersClasses/cassettePlayer";
 })
 export class AppComponent {
 
+    protected readonly SoundOutput = SoundOutput;
+    protected readonly PlayerType = PlayerType;
     public currentPlayer: MusicPlayer;
     public displayedColumns: string[] = ['title'];
     constructor() {
@@ -37,10 +39,6 @@ export class AppComponent {
                 break;
         }
     }
-
-
-    protected readonly SoundOutput = SoundOutput;
-    protected readonly PlayerType = PlayerType;
 }
 
 

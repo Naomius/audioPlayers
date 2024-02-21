@@ -10,7 +10,6 @@ export class PocketMP3Player extends MusicPlayer implements
         this.chargeBatteryLevel = 50;
     }
 
-
     override toggleFavorite(song: Music): void {
         song.isFavorite = !song.isFavorite;
         if (song.isFavorite) {

@@ -65,7 +65,7 @@
                     <mat-icon style="color: white">shuffle</mat-icon>
                 </button>
             </div>
-            <table mat-table [dataSource]="currentPlayer.currentSongsSet" class="music-list">
+            <table mat-table [dataSource]="currentPlayer.playList" class="music-list">
                 <ng-container matColumnDef="title">
                     <th mat-header-cell *matHeaderCellDef>Название</th>
                     <td class="cassettePlayer_music-list-flex"
@@ -124,20 +124,10 @@
 
                 <button mat-button [matMenuTriggerFor]="menu">Подсветка</button>
                 <mat-menu #menu="matMenu">
-                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.Cassette">
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('white')">Белая</button>
-                    </ng-container>
-                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.MP3">
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('blue')">Синяя</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('green')">Зеленая</button>
-                    </ng-container>
-                    <ng-container *ngIf="currentPlayer && currentPlayer.playerType === PlayerType.Modern">
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('red')">Красная</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('yellow')">Желтая</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('green')">Зеленая</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('blue')">Синяя</button>
-                        <button mat-menu-item (click)="currentPlayer.changeBacklightColor('purple')">Фиолетовая</button>
+                    <ng-container *ngIf="currentPlayer">
+                        <ng-container *ngFor="let color of currentPlayer.getAvailableBacklightColors()">
+                            <button mat-menu-item (click)="currentPlayer.changeBacklightColor(color)">{{ color }}</button>
+                        </ng-container>
                     </ng-container>
                 </mat-menu>
 
