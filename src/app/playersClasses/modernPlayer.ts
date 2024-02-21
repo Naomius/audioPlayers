@@ -1,5 +1,5 @@
 import {MusicPlayer} from "./musicPlayer";
-import {IShufflePlaylistControl, Music, OutputDeviceIcons} from "../interfaces";
+import {IShufflePlaylistControl, Music,} from "../interfaces";
 import {PlayerType, SoundOutput} from "../enums";
 
 export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl {
@@ -9,6 +9,7 @@ export class ModernPlayer extends MusicPlayer implements IShufflePlaylistControl
         this.currentVolume = 90;
         this.chargeBatteryLevel = 20;
         this.favoriteSongs = [];
+        this.outputDevice = 'headphones';
         this.backlightColors = ['Белый', 'Красный', 'Синий', 'Зеленый', 'Желтый', 'Фиолетовый'];
         this.englishBacklightColors = ['white', 'red', 'blue', 'green', 'yellow', 'purple'];
 

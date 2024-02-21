@@ -14,6 +14,7 @@ export class PocketMP3Player extends MusicPlayer implements
         this.currentVolume = 80;
         this.chargeBatteryLevel = 50;
         this.favoriteSongs = [];
+        this.outputDevice = 'headphones';
         this.backlightColors = ['Белый', 'Красный', 'Синий'];
         this.englishBacklightColors = ['white', 'red', 'blue'];
         this.outputDeviceIcons = {

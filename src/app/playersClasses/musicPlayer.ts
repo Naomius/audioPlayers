@@ -11,14 +11,13 @@ export abstract class MusicPlayer implements IPlaybackControl,
     IShufflePlaylistControl,
     IVolumeControl {
 
-
     public playerType: PlayerType;
     public currentSong: string;
     public isPlaying: boolean;
     public backlightColor!: string;
     public chargeBatteryLevel!: number;
     public currentVolume!: number;
-    public outputDevice: string;
+    public outputDevice!: string;
     public playList: Music[];
     public newSongs: Music[];
     public currentSongsSet: Music[];
@@ -33,7 +32,6 @@ export abstract class MusicPlayer implements IPlaybackControl,
         this.playerType = playerType;
         this.currentSong = '...';
         this.isPlaying = false;
-        this.outputDevice = 'headphones';
         this.playList = [
             {title: 'Saliva', url: './assets/music/Saliva.mp3', isFavorite: false},
             {title: 'FiveFinger', url: './assets/music/FiveFinger.mp3', isFavorite: false},

@@ -3,12 +3,10 @@ import {PlayerType, SoundOutput} from "../enums";
 import {IShufflePlaylistControl, Music} from "../interfaces";
 
 export class CassettePlayer extends MusicPlayer implements IShufflePlaylistControl{
-
-    override chargeBatteryLevel: number;
-    override backlightColor!: string;
     constructor() {
         super(PlayerType.Cassette);
         this.currentVolume = 100;
+        this.outputDevice = 'headphones';
         this.chargeBatteryLevel = 60;
         this.backlightColors = ['Белый'];
         this.englishBacklightColors = ['white'];
